@@ -1,6 +1,6 @@
 # RFID Access Control Project
 
-This repository contains the code and documentation related to the RFID Access Control project developed for [University of Guadalajara].
+This repository contains the code and documentation related to the RFID Access Control project developed for the **University of Guadalajara**.
 
 ## Description
 
@@ -42,10 +42,10 @@ If you wish to contribute to this project, we welcome collaborations! Feel free 
 
 ## Credits
 
-Developed by [Your Name], [Jose Luis Murillo Salas], [Jose Cordoba Contreras], and [Luis Enrrique Cazares Garcia].
+Developed by **Jose Luis Murillo Salas**, **Jose Cordoba Contreras**, and **Luis Enrrique Cazares Garcia**.
 
 ## License
 
-This project is under the Unlicense License. For more details, see the LICENSE file.
+This project is under the **Unlicense** License. For more details, see the LICENSE file.
 
 ---
