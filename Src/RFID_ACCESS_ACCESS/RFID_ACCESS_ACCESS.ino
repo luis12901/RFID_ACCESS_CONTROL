@@ -16,7 +16,7 @@
   #include <ESPmDNS.h>
 
 
-// prototypeFunctions();   // USe it only if the code doesn't compile for some missing prototype functions
+// prototypeFunctions();   // Use it only if the code doesn't compile for some missing prototype functions
 
 void setup() {
   pinConfig();
@@ -27,6 +27,7 @@ void setup() {
 void loop() {
 
     if(onlineVerification()){
+        getRFIDData();
         validateCardPresence();
     }
     else{

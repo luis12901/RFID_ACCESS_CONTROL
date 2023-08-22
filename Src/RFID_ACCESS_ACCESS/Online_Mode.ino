@@ -70,17 +70,6 @@ void validateCardPresence(){
 
 }
 
-
-void postJSONToServer(){
-      uint8_t counter = 0; 
-      jsonMessage = json1 + serialNumber + json2;
-      char completedJsonMessage[150];
-      jsonMessage.toCharArray(completedJsonMessage, 150);
-      conexionURL(counter, completedJsonMessage, "http://192.168.43.122/registro_y_consulta.php", false);
-
-}
-
-
 void conexionURL(int counter, char* mensajeJSON, char* servidor, bool pruebas) {
   char temporal[50];
   char mensajeHTML[400];
@@ -134,5 +123,77 @@ void conexionURL(int counter, char* mensajeJSON, char* servidor, bool pruebas) {
   }
 }
 
+void postJSONToServer(){
+      uint8_t counter = 0; 
+      jsonMessage = json1 + serialNumber + json2;
+      char completedJsonMessage[150];
+      jsonMessage.toCharArray(completedJsonMessage, 150);
+      conexionURL(counter, completedJsonMessage, "http://192.168.43.122/registro_y_consulta.php", false);
+
+}
 
 
+void getJSONFromServer(){
+
+
+    WiFiClient clienteServidor = servidor.available();
+    finMensaje = false;
+
+    if (clienteServidor) {
+
+        tiempoConexionInicio = xTaskGetTickCount();
+
+        while (clienteServidor.connected()) {
+
+            if (clienteServidor.available() > 0) {
+
+                char c = clienteServidor.read();
+              
+                if (c == '}') {
+
+                    finMensaje = true;
+
+                }
+                if (c == '\n') {
+
+                    if (currentLine.length() == 0) {
+
+                        //Inicia la respuesta
+
+                    }
+                    else{  
+
+                        currentLine = "";
+
+                    }
+                }
+                else if (c != '\r') { 
+
+                    currentLine += c; 
+
+                }  
+             }
+         }
+     }
+  }
+
+
+
+
+void performJSONActions(){
+
+  if (finMensaje) {
+
+                      String mensajeJSON = currentLine;
+                      StaticJsonDocument<200> doc;
+                      DeserializationError error = deserializeJson(doc, mensajeJSON);
+
+                      if (error) {
+
+                          Serial.print(F("deserializeJson() failed: "));
+                          Serial.println(error.f_str());
+
+                      }
+                  }
+
+}

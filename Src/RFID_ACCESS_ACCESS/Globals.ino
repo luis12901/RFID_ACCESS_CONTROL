@@ -22,3 +22,7 @@
   String json2 = "\"}";
   String jsonMessage;
 
+  String currentLine = "";  
+  long int tiempoConexionInicio = 0;
+  bool finMensaje = false; 
+
