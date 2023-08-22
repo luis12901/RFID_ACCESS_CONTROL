@@ -1,3 +1,13 @@
+/*
+   Project: RFID Access Control (Online functions)
+   Description: This code controls an access system using RFID tags.
+   Author: Jose Luis Murillo Salas
+   Creation Date: August 20, 2023
+   Contact: joseluis.murillo2022@hotmail.com
+*/
+
+
+
 
 bool onlineVerification(){
 
@@ -175,25 +185,89 @@ void getJSONFromServer(){
              }
          }
      }
-  }
-
-
-
+}
 
 void performJSONActions(){
 
   if (finMensaje) {
 
-                      String mensajeJSON = currentLine;
-                      StaticJsonDocument<200> doc;
-                      DeserializationError error = deserializeJson(doc, mensajeJSON);
+        // Extract all parameter in a StaticJsonDocument
 
-                      if (error) {
+            String mensajeJSON = currentLine;
+            StaticJsonDocument<200> doc;
+            DeserializationError error = deserializeJson(doc, mensajeJSON);
 
-                          Serial.print(F("deserializeJson() failed: "));
-                          Serial.println(error.f_str());
+        if (error) {
+
+              Serial.print(F("deserializeJson() failed: "));
+              Serial.println(error.f_str());
+
+        }
+        else{
+          
+            //  JSON MESSAGE PARAMETERS
+                uint8_t acceso_nivel = doc["acceso_nivel"];
+                uint8_t acceso = doc["acceso"];
+                uint8_t estado = doc["estado"];
+                const char* clave = doc["clave"];
+                const char* nombre = doc["nombre"];
+                String claveS(clave);
+                String nombreS(nombre);
+              
+
+          
+          if (claveS == "1234"){    
+
+            // Add Metadatos as a quick description
+
+                if(acceso_nivel == 1){
+
+                        if (estado == 1){  
+
+                              if (acceso == 1) {
+
+
+
+                              } 
+                              else{
+                          
+
+                  
+                              }
+                        } 
+                        else{
+                        
+
+
+                        }
+                }
+                else{
+
+                      if(acceso == 1){
+
+
 
                       }
-                  }
+                      else{
+
+
+                          
+                      }
+
+                } 
+          }
+          else{
+
+
+          }
+        
+        }
+  }
+  else{
+    // error with Server, did not save all the JSON Data
+  }
 
 }
+
+
+
