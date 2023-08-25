@@ -8,6 +8,17 @@
 
 
 
+void online(){
+
+  getRFIDData();
+  
+  if(validateCardPresence()){
+
+        postJSONToServer();
+        getJSONFromServer();
+
+  }
+}
 
 bool onlineVerification(){
 
@@ -66,19 +77,342 @@ void getRFIDData(){
 }
 
 
-void validateCardPresence(){
+bool validateCardPresence(){
    
+      if (serialNumber.length() > 0) {
 
-  if (serialNumber.length() > 0) {
+        Serial.println("RFID CARD: " + serialNumber);
 
-    Serial.println("RFID CARD: " + serialNumber);
+        return true;
+        
+      }
 
-    postJSONToServer();
-    
+      else{
+        
+        return false;
+
+      }
+
+}
+
+void postJSONToServer(){
+      uint8_t counter = 0; 
+      jsonMessage = json1 + serialNumber + json2;
+      char completedJsonMessage[150];
+      jsonMessage.toCharArray(completedJsonMessage, 150);
+      conexionURL(counter, completedJsonMessage, "http://192.168.43.122/registro_y_consulta.php", false);
+
+}
+
+
+void getJSONFromServer(){
+
+    // Get all JSON message in currentLine global vaiable
+
+    clienteServidor = servidor.available();
+    finMensaje = false;
+
+    if (clienteServidor) {
+          tiempoConexionInicio = xTaskGetTickCount();
+          while (clienteServidor.connected()){
+            if (clienteServidor.available() > 0) {
+              char c = clienteServidor.read();
+              
+              if (c == '}') {
+                finMensaje = true;
+              }
+              if (c == '\n') {
+                if (currentLine.length() == 0) {
+                 
+
+                } else {  
+                  currentLine = "";
+                }
+              } else if (c != '\r') { 
+                currentLine += c;     
+              }
+
+              
+              // Verify variable "finMensaje" is true that means "currentLine" has all JSON parameters 
+                        // if that's the case we deserialize all JSON data from "currentLine"
+             
+              if (finMensaje) {
+
+                String mensajeJSON = currentLine;
+                StaticJsonDocument<200> doc;
+                DeserializationError error = deserializeJson(doc, mensajeJSON);
+
+                if (error){
+
+                  Serial.print(F("deserializeJson() failed: "));
+                  Serial.println(error.f_str());
+
+                } 
+                else{
+
+                    // Save all JSON deserialized parameter in different variables
+                        acceso_nivel = doc["acceso_nivel"];
+                        acceso = doc["acceso"];
+                        estado = doc["estado"];
+
+                        const char* clave = doc["clave"];
+                        const char* nombre = doc["nombre"];
+
+                        String claveS(clave);
+                        String nombreS(nombre);
+
+                    
+                    // With applyJSONLogic we take an action depending on the information obtained by the JSON message 
+                    applyJSONLogic();
+
+                }
+          }
+          else{
+            
+            // Server error, Couldn't save all the JSON Data
+
+          }
+
+          // JSOP Message recieved
+          tiempoComparacion = xTaskGetTickCount();
+          if (tiempoComparacion > (tiempoConexionInicio + 3000)) {
+
+                Serial.println("Error timeout");
+                break;
+
+          }
+       }
+    }
+    clienteServidor.stop();
   }
+  //  Clear all characters within serialNumber for the next time we read a new RFID Tag
+  serialNumber = "";
+}
+
+void applyJSONLogic(){
+
+    if (claveS == "1234"){    
+
+            // Add Meta data as a quick description in every action taken by the ESP32
+
+            if(estado == 1){
+
+                if (acceso_nivel == 1){  
+
+                      if (acceso == 1) {
+
+                             registerUserEntry();
+
+                      } 
+                      else{
+                                  
+                             registerUserExit();
+                          
+                      }
+                 } 
+                 else{
+                                
+                      NoSufficientLevel();  
+
+                 }
+            }
+            else{
+                  
+                  noUserFoundAction();
+                  
+             } 
+     }
+    else{
+
+         accessDenied();   
+
+     }
+}
+
+
+void registerUserEntry(){
+
+   
+    // Unlock the lock
+    digitalWrite(LOCK_PIN, 0);
+
+    // Serial printing
+    Serial.print("Welcome ");
+    Serial.print(nombreS);
+    Serial.println(", your entry has been registered.");
+
+    // LCD screen configuration and manipulation
+    ////lcd.clear();
+    ////lcd.setCursor(5, 0);
+    ////lcd.print("Welcome,");
+
+    nombreLength = nombreS.length();
+    espaciosLibres = 20 - nombreLength;
+    espaciosIzquierda = espaciosLibres / 2;
+
+    ////lcd.setCursor(espaciosIzquierda, 1);
+    ////lcd.print(nombreS);
+    ////lcd.setCursor(2, 2);
+    ////lcd.print("has been registered");
+    ////lcd.setCursor(5, 3);
+    ////lcd.print("your entry.");
+
+    // Sending HTTP headers
+    clienteServidor.println("HTTP/1.1 200 OK");
+    clienteServidor.println("Content-type: text/html");
+    clienteServidor.println();
+
+    // Sending a JSON message as response
+    clienteServidor.print("{\"respuesta\":\"ok\",\"nombre\":\"");
+    clienteServidor.print(nombreS);
+    clienteServidor.println();
+
+    // Wait before continuing
+    delay(8000);
+
+    // Lock the lock after a certain time
+    digitalWrite(LOCK_PIN, 1);
+
+    // Clearing the LCD screen
+    ////lcd.clear();
+
+    // Restarting the ESP32
+          esp_restart();
+    
+
+}
+
+
+void registerUserExit(){
+
+      //lcd.clear();
+
+
+      //lcd.setCursor(0,0);
+      //lcd.print("Se ha registrado su");
+
+
+      //lcd.setCursor(6,1);
+      //lcd.print("salida");
+
+      nombreLength = nombreS.length();
+      espaciosLibres = 20 - nombreLength;
+      espaciosIzquierda = espaciosLibres / 2;
+                       
+      //lcd.setCursor(espaciosIzquierda,2);
+      //lcd.print(nombreS);
+                        
+
+      Serial.print(nombreS);
+      Serial.println(".");
+
+
+      digitalWrite(LOCK_PIN, 1);
+
+
+      clienteServidor.println("HTTP/1.1 200 OK");
+      clienteServidor.println("Content-type:text/html");
+      clienteServidor.println("\"}");
+      clienteServidor.println();
+      clienteServidor.print("{\"respuesta\":\"ok\",\"nombre\":\"");
+      clienteServidor.print(nombreS);
+      clienteServidor.println();
+
+
+      delay(5000);
+      //lcd.clear();
+      
+
+      // REINICIO DE LA ESP32
+          esp_restart();
 
 
 }
+
+
+void noUserFoundAction(){
+
+      //lcd.clear();
+
+
+      //lcd.setCursor(5,0);
+      //lcd.print("Lo sentimos,");
+
+      //lcd.setCursor(1,1);
+      //lcd.print("no se ha encontrado");
+
+      //lcd.setCursor(4,2);
+      //lcd.print("su usuario.");
+
+
+      digitalWrite(LOCK_PIN, 1);
+
+
+      clienteServidor.println("HTTP/1.1 200 OK");
+      clienteServidor.println("Content-type:text/html");
+      clienteServidor.println();
+      clienteServidor.println("{\"Respuesta\":\"Coudln't found this user\"}");
+      clienteServidor.println();
+
+
+      Serial.println("Lo sentimos, no se ha encontrado su usuario en nuestra base de datos.");
+
+
+      delay(5000);
+      //lcd.clear();
+
+}
+
+
+void NoSufficientLevel(){
+
+        digitalWrite(LOCK_PIN, 1);
+
+        //lcd.clear();
+
+
+        //lcd.setCursor(3, 0);
+        //lcd.print("Lo sentimos,");
+
+        //lcd.setCursor(2, 1);
+        //lcd.print("no tiene acceso");
+
+        //lcd.setCursor(4, 2);
+        //lcd.print("a esta aula.");
+
+        clienteServidor.println("HTTP/1.1 200 OK");
+        clienteServidor.println("Content-type:text/html");
+        clienteServidor.println();
+        clienteServidor.println("{\"Respuesta\":\"User with no Sufficient Level\"}");
+        clienteServidor.println();
+
+
+        Serial.println("Lo sentimos, no tiene acceso a esta aula.");
+
+
+        delay(5000);
+        //lcd.clear();
+
+}
+
+
+void accessDenied(){
+
+        //lcd.clear();
+
+        //lcd.setCursor(3, 1);
+        //lcd.print("Acceso denegado.");
+
+        clienteServidor.println("HTTP/1.1 200 OK");
+        clienteServidor.println("Content-type:text/html");
+        clienteServidor.println();
+        clienteServidor.println("{\"respuesta\":\"errorClave\"}");
+        clienteServidor.println();
+
+        Serial.println("Acceso denegado.");
+
+}
+
 
 void conexionURL(int counter, char* mensajeJSON, char* servidor, bool pruebas) {
   char temporal[50];
@@ -132,142 +466,4 @@ void conexionURL(int counter, char* mensajeJSON, char* servidor, bool pruebas) {
     Serial.println(" ");
   }
 }
-
-void postJSONToServer(){
-      uint8_t counter = 0; 
-      jsonMessage = json1 + serialNumber + json2;
-      char completedJsonMessage[150];
-      jsonMessage.toCharArray(completedJsonMessage, 150);
-      conexionURL(counter, completedJsonMessage, "http://192.168.43.122/registro_y_consulta.php", false);
-
-}
-
-
-void getJSONFromServer(){
-
-
-    WiFiClient clienteServidor = servidor.available();
-    finMensaje = false;
-
-    if (clienteServidor) {
-
-        tiempoConexionInicio = xTaskGetTickCount();
-
-        while (clienteServidor.connected()) {
-
-            if (clienteServidor.available() > 0) {
-
-                char c = clienteServidor.read();
-              
-                if (c == '}') {
-
-                    finMensaje = true;
-
-                }
-                if (c == '\n') {
-
-                    if (currentLine.length() == 0) {
-
-                        //Inicia la respuesta
-
-                    }
-                    else{  
-
-                        currentLine = "";
-
-                    }
-                }
-                else if (c != '\r') { 
-
-                    currentLine += c; 
-
-                }  
-             }
-         }
-     }
-}
-
-void performJSONActions(){
-
-  if (finMensaje) {
-
-        // Extract all parameter in a StaticJsonDocument
-
-            String mensajeJSON = currentLine;
-            StaticJsonDocument<200> doc;
-            DeserializationError error = deserializeJson(doc, mensajeJSON);
-
-        if (error) {
-
-              Serial.print(F("deserializeJson() failed: "));
-              Serial.println(error.f_str());
-
-        }
-        else{
-          
-            //  JSON MESSAGE PARAMETERS
-                uint8_t acceso_nivel = doc["acceso_nivel"];
-                uint8_t acceso = doc["acceso"];
-                uint8_t estado = doc["estado"];
-                const char* clave = doc["clave"];
-                const char* nombre = doc["nombre"];
-                String claveS(clave);
-                String nombreS(nombre);
-              
-
-          
-          if (claveS == "1234"){    
-
-            // Add Metadatos as a quick description
-
-                if(acceso_nivel == 1){
-
-                        if (estado == 1){  
-
-                              if (acceso == 1) {
-
-
-
-                              } 
-                              else{
-                          
-
-                  
-                              }
-                        } 
-                        else{
-                        
-
-
-                        }
-                }
-                else{
-
-                      if(acceso == 1){
-
-
-
-                      }
-                      else{
-
-
-                          
-                      }
-
-                } 
-          }
-          else{
-
-
-          }
-        
-        }
-  }
-  else{
-    // error with Server, did not save all the JSON Data
-  }
-
-}
-
-
 

@@ -10,7 +10,7 @@
 
   #define SS_PIN 5
   #define RST_PIN 35
-  #define BUZZER_PIN 12
+  #define BUZZER_PIN 2
   #define LOCK_PIN 32
   #define LCD 25
   #define RFID 26
@@ -29,7 +29,26 @@
   String json2 = "\"}";
   String jsonMessage;
 
+
   String currentLine = "";  
   long int tiempoConexionInicio = 0;
   bool finMensaje = false; 
+  long int tiempoComparacion = 0;
 
+
+  uint8_t acceso_nivel = 0;
+  uint8_t acceso = 0;
+  uint8_t estado = 0;
+  String claveS;
+  String nombreS;
+
+
+  WiFiClient clienteServidor;
+
+  
+
+
+// LCD Variables
+    int nombreLength = 0;
+    int espaciosLibres = 0;
+    int espaciosIzquierda = 0;

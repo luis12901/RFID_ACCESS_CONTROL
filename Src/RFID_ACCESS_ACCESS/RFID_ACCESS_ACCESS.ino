@@ -36,10 +36,14 @@ void setup() {
 void loop() {
 
     if(onlineVerification()){
-        getRFIDData();
-        validateCardPresence();
+
+        online();
+        
+
     }
     else{
+
+        // Offline Mode
 
     }
   

@@ -20,7 +20,7 @@ void prototypeFunctions(){
 
   void postJSONToServer();
 
-  void validateCardPresence();
+  bool validateCardPresence();
 
   void getRFIDData();
 

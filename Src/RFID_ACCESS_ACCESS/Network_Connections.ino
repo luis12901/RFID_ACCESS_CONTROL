@@ -61,6 +61,8 @@ bool WifiConnected() {
 
 }
 
+
+
 bool ServerConnected() {
   
   // Variables de conexión HTTP

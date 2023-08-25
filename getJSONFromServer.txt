@@ -1,0 +1,41 @@
+
+getJSONFromServer
+
+
+
+if (clienteServidor) {
+
+        tiempoConexionInicio = xTaskGetTickCount();
+
+        while (clienteServidor.connected()) {
+
+            if (clienteServidor.available() > 0) {
+
+                char c = clienteServidor.read();
+              
+                if (c == '}') {
+
+                    finMensaje = true;
+
+                }
+                if (c == '\n') {
+
+                    if (currentLine.length() == 0) {
+
+                        //Inicia la respuesta
+
+                    }
+                    else{  
+
+                        currentLine = "";
+
+                    }
+                }
+                else if (c != '\r') { 
+
+                    currentLine += c; 
+
+                }  
+             }
+         }
+     }
