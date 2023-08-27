@@ -37,13 +37,12 @@ void loop() {
 
     if(onlineVerification()){
 
-        online();
-        
+        online(); 
 
     }
     else{
 
-        // Offline Mode
+        offline();
 
     }
   

@@ -8,6 +8,8 @@
 
 
 
+
+
 void online(){
 
   getRFIDData();
@@ -19,7 +21,6 @@ void online(){
 
   }
 }
-
 bool onlineVerification(){
 
   
@@ -27,13 +28,13 @@ bool onlineVerification(){
 
       if(ServerConnected()){
    
-        Serial.print("Connected Successfully");
+        Serial.println("Connected Successfully");
         return true;
 
       }
       else{
 
-        Serial.print("Connection Error (Code: 002)");
+        Serial.println("Connection Error (Code: 002)");
         return false;
 
       }
@@ -41,14 +42,12 @@ bool onlineVerification(){
   }
   else{
 
-    Serial.print("Connection Error (Code: 001)");
+    Serial.println("Connection Error (Code: 001)");
     return false;
 
   }
 
 }
-
-
 void getRFIDData(){
 
   if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()) {
@@ -75,8 +74,6 @@ void getRFIDData(){
   }
 
 }
-
-
 bool validateCardPresence(){
    
       if (serialNumber.length() > 0) {
@@ -94,7 +91,6 @@ bool validateCardPresence(){
       }
 
 }
-
 void postJSONToServer(){
       uint8_t counter = 0; 
       jsonMessage = json1 + serialNumber + json2;
@@ -103,8 +99,6 @@ void postJSONToServer(){
       conexionURL(counter, completedJsonMessage, "http://192.168.43.122/registro_y_consulta.php", false);
 
 }
-
-
 void getJSONFromServer(){
 
     // Get all JSON message in currentLine global vaiable
@@ -188,7 +182,6 @@ void getJSONFromServer(){
   //  Clear all characters within serialNumber for the next time we read a new RFID Tag
   serialNumber = "";
 }
-
 void applyJSONLogic(){
 
     if (claveS == "1234"){    
@@ -228,8 +221,6 @@ void applyJSONLogic(){
 
      }
 }
-
-
 void registerUserEntry(){
 
    
@@ -281,8 +272,6 @@ void registerUserEntry(){
     
 
 }
-
-
 void registerUserExit(){
 
       //lcd.clear();
@@ -328,8 +317,6 @@ void registerUserExit(){
 
 
 }
-
-
 void noUserFoundAction(){
 
       //lcd.clear();
@@ -362,8 +349,6 @@ void noUserFoundAction(){
       //lcd.clear();
 
 }
-
-
 void NoSufficientLevel(){
 
         digitalWrite(LOCK_PIN, 1);
@@ -394,8 +379,6 @@ void NoSufficientLevel(){
         //lcd.clear();
 
 }
-
-
 void accessDenied(){
 
         //lcd.clear();
@@ -412,8 +395,6 @@ void accessDenied(){
         Serial.println("Acceso denegado.");
 
 }
-
-
 void conexionURL(int counter, char* mensajeJSON, char* servidor, bool pruebas) {
   char temporal[50];
   char mensajeHTML[400];
@@ -466,4 +447,3 @@ void conexionURL(int counter, char* mensajeJSON, char* servidor, bool pruebas) {
     Serial.println(" ");
   }
 }
-

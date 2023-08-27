@@ -5,3 +5,104 @@
    Creation Date: August 20, 2023
    Contact: joseluis.murillo2022@hotmail.com
 */
+
+
+
+
+void offline(){
+
+  menu();
+  
+  if(waitForKeyPress()){
+
+    waitForPasswordPress();
+
+  }
+}
+void menu(){
+  
+  Serial.println(""); 
+  Serial.println("Selecciona una opción:");
+  Serial.println("1.- Ingresar al modo offline");
+  Serial.println("2.- Intentar reconexion");
+
+}
+bool waitForKeyPress(){
+
+  while(true){
+
+      if(boton_1){
+          
+          Serial.println("Offline mode selected");
+          boton_1 = false; 
+          break;
+
+      }   
+  }
+
+  return true;
+  
+}
+bool waitForPasswordPress(){
+
+    Serial.println("Please enter the password:");
+    uint8_t index = 0;
+
+    while(true){
+
+        char enteredPassword[7];
+        char correctPassword[7] = "AAAAAA";
+
+        key = keypad.getKey();
+
+        if (key) {
+          
+          enteredPassword[index] = key;  
+          index++;
+          Serial.println(key);
+
+        }
+
+
+        if (index == 6) {
+         
+          if (strcmp(correctPassword, enteredPassword) == 0) {
+           
+            Serial.println("Access granted"); 
+            Serial.println("");
+
+            //lcd.clear();
+            //lcd.setCursor(2, 0);
+            //lcd.print("Acceso permitido");
+            
+            digitalWrite(LOCK_PIN, 0);
+            delay(8000);
+            digitalWrite(LOCK_PIN, 1);
+            
+          }
+
+          else{
+
+            Serial.println("Access denied. Incorrect password.");
+            Serial.println("");
+
+            //lcd.clear();
+            //lcd.setCursor(2, 0);
+            //lcd.print("Acceso denegado");
+
+            digitalWrite(LOCK_PIN, 1);
+
+          }
+          
+          index = 0;
+
+          break;
+         
+        }
+ 
+    }
+
+} 
+void IRAM_ATTR boton_1_isr() {
+  boton_1 = true; 
+}

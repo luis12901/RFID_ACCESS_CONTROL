@@ -7,10 +7,13 @@
 */
 
 
+
+
+
 // Network Variables
 
   char ssid[100]     = "RFID";
-  char password[100] = "123456789";
+  char password[100] = "3333379426";
 
   WiFiServer servidor(80);
 
@@ -19,7 +22,7 @@ bool WifiConnected() {
 
   uint8_t secondsCounter = 0;
 
-  Serial.print("Conectando a ");
+  Serial.print("Connecting to ");
   Serial.println(ssid);
 
   WiFi.begin(ssid, password);
@@ -60,9 +63,6 @@ bool WifiConnected() {
   return true;
 
 }
-
-
-
 bool ServerConnected() {
   
   // Variables de conexión HTTP
