@@ -57,7 +57,7 @@
   //bool key_pressed = false;
   volatile bool boton_1 = false;
 
-// Keyboard
+// Keyboard_&_LCD
   const uint8_t ROWS = 4;
   const uint8_t COLS = 4;
 
@@ -74,3 +74,5 @@
   Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
   char key;
+
+  LiquidCrystal_I2C lcd(0x27,10,4);

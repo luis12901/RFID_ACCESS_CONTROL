@@ -25,7 +25,8 @@
   #include <ESPmDNS.h>
 
 
-// prototypeFunctions();   // Use it only if the code doesn't compile for some missing prototype functions
+// prototypeFunctions();   // Use it only if the code doesn't compile for some missing prototype functions within the other ino files 
+
 
 void setup() {
   pinConfig();
@@ -37,15 +38,15 @@ void loop() {
 
     if(onlineVerification()){
 
+        
         online(); 
-
+  
     }
     else{
 
         offline();
 
     }
-  
 }
 
 

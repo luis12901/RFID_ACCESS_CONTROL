@@ -12,8 +12,8 @@
 
 // Network Variables
 
-  char ssid[100]     = "RFID";
-  char password[100] = "3333379426";
+  char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
+  char password[100] = "Guadalajara129#";
 
   WiFiServer servidor(80);
 
@@ -55,10 +55,10 @@ bool WifiConnected() {
 
 
   Serial.println("");
-  Serial.println("WiFi conectado");
-  Serial.println("Direccion IP: ");
+  Serial.println("WiFi connected");
+  Serial.println("Local IP: ");
   Serial.println(WiFi.localIP());
-  Serial.println("Direccion MAC: ");
+  Serial.println("MAC address: ");
   Serial.println(WiFi.macAddress());
   return true;
 
@@ -66,7 +66,7 @@ bool WifiConnected() {
 bool ServerConnected() {
   
   // Variables de conexión HTTP
-    const char* serverIP = "http://192.168.43.122";
+    const char* serverIP = "http://192.168.100.146";
     WiFiClient client;
     HTTPClient http;
 

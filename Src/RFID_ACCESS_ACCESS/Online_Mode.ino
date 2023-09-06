@@ -12,22 +12,39 @@
 
 void online(){
 
-  getRFIDData();
-  
-  if(validateCardPresence()){
+  unsigned long startTime = 0;
 
-        postJSONToServer();
-        getJSONFromServer();
+  while(true){
+
+      if (startTime == 0) {
+
+            startTime = millis();
+
+      }
+
+
+      getRFIDData();
+      
+
+      if(serialNumber.length() > 0){
+
+            postJSONToServer();
+            getJSONFromServer();
+            break;
+
+      }
+
+      unsigned long currentTime = millis();
+
+      if (currentTime - startTime > 60000) {break;}
 
   }
+
 }
 bool onlineVerification(){
 
-  
-  if(WifiConnected()){
-
       if(ServerConnected()){
-   
+        
         Serial.println("Connected Successfully");
         return true;
 
@@ -38,15 +55,6 @@ bool onlineVerification(){
         return false;
 
       }
-
-  }
-  else{
-
-    Serial.println("Connection Error (Code: 001)");
-    return false;
-
-  }
-
 }
 void getRFIDData(){
 
@@ -71,32 +79,25 @@ void getRFIDData(){
 
       }
 
+      if (serialNumber.length() > 0) {
+
+          Serial.print("Serial number: ");
+          Serial.println(serialNumber);
+         
+      
+      }
+      
+
   }
 
 }
-bool validateCardPresence(){
-   
-      if (serialNumber.length() > 0) {
 
-        Serial.println("RFID CARD: " + serialNumber);
-
-        return true;
-        
-      }
-
-      else{
-        
-        return false;
-
-      }
-
-}
 void postJSONToServer(){
       uint8_t counter = 0; 
       jsonMessage = json1 + serialNumber + json2;
       char completedJsonMessage[150];
       jsonMessage.toCharArray(completedJsonMessage, 150);
-      conexionURL(counter, completedJsonMessage, "http://192.168.43.122/registro_y_consulta.php", false);
+      conexionURL(counter, completedJsonMessage, "http://192.168.100.146/registro_y_consulta.php", false);
 
 }
 void getJSONFromServer(){
@@ -143,21 +144,30 @@ void getJSONFromServer(){
 
                 } 
                 else{
-
-                    // Save all JSON deserialized parameter in different variables
-                        acceso_nivel = doc["acceso_nivel"];
-                        acceso = doc["acceso"];
-                        estado = doc["estado"];
-
-                        const char* clave = doc["clave"];
-                        const char* nombre = doc["nombre"];
-
-                        String claveS(clave);
-                        String nombreS(nombre);
-
                     
-                    // With applyJSONLogic we take an action depending on the information obtained by the JSON message 
-                    applyJSONLogic();
+                    
+                    // Save all JSON deserialized parameter in different variables
+                          uint8_t securityLevel = doc["acceso_nivel"];
+                          acceso_nivel = securityLevel;
+
+                          uint8_t accessType = doc["acceso"];
+                          acceso = accessType;
+
+                          uint8_t userFound = doc["estado"];
+                          estado = userFound;
+
+                          const char* clave = doc["clave"];
+                          const char* nombre = doc["nombre"];
+
+                          String claveJsonMsg(clave);
+                          claveS = claveJsonMsg;
+
+                          String userName(nombre);
+                          nombreS = userName; 
+
+
+                          applyJsonLogic();
+                    
 
                 }
           }
@@ -182,101 +192,104 @@ void getJSONFromServer(){
   //  Clear all characters within serialNumber for the next time we read a new RFID Tag
   serialNumber = "";
 }
-void applyJSONLogic(){
 
-    if (claveS == "1234"){    
+void applyJsonLogic() {
+        if (claveS == "1234"){    
 
-            // Add Meta data as a quick description in every action taken by the ESP32
+              // Add Meta data
 
-            if(estado == 1){
+              if (estado == 1) {
 
-                if (acceso_nivel == 1){  
+                    if (acceso_nivel == 1) {
 
-                      if (acceso == 1) {
+                          if (acceso == 1) {
 
-                             registerUserEntry();
+                                registerUserEntry();
 
-                      } 
-                      else{
-                                  
-                             registerUserExit();
-                          
-                      }
-                 } 
-                 else{
-                                
-                      NoSufficientLevel();  
+                          } 
+                          else {
 
-                 }
-            }
-            else{
-                  
-                  noUserFoundAction();
-                  
-             } 
-     }
-    else{
+                                registerUserExit();
 
-         accessDenied();   
+                          }
+                    } 
+                    else {
 
-     }
+                      NoSufficientLevel();
+
+                    }
+              } 
+              else {
+
+                noUserFoundAction();
+
+              }
+
+        }
+        else {
+
+            accessDenied();
+
+        }
 }
+
 void registerUserEntry(){
 
-   
-    // Unlock the lock
-    digitalWrite(LOCK_PIN, 0);
+        // Unlock the lock
+        digitalWrite(LOCK_PIN, 0);
 
-    // Serial printing
-    Serial.print("Welcome ");
-    Serial.print(nombreS);
-    Serial.println(", your entry has been registered.");
+        // Serial printing
+        Serial.print("Welcome ");
+        Serial.print(nombreS);
+        Serial.println(", your entry has been registered.");
 
-    // LCD screen configuration and manipulation
-    ////lcd.clear();
-    ////lcd.setCursor(5, 0);
-    ////lcd.print("Welcome,");
+        // LCD screen configuration and manipulation
+        ////lcd.clear();
+        ////lcd.setCursor(5, 0);
+        ////lcd.print("Welcome,");
 
-    nombreLength = nombreS.length();
-    espaciosLibres = 20 - nombreLength;
-    espaciosIzquierda = espaciosLibres / 2;
+        nombreLength = nombreS.length();
+        espaciosLibres = 20 - nombreLength;
+        espaciosIzquierda = espaciosLibres / 2;
 
-    ////lcd.setCursor(espaciosIzquierda, 1);
-    ////lcd.print(nombreS);
-    ////lcd.setCursor(2, 2);
-    ////lcd.print("has been registered");
-    ////lcd.setCursor(5, 3);
-    ////lcd.print("your entry.");
+        ////lcd.setCursor(espaciosIzquierda, 1);
+        ////lcd.print(nombreS);
+        ////lcd.setCursor(2, 2);
+        ////lcd.print("has been registered");
+        ////lcd.setCursor(5, 3);
+        ////lcd.print("your entry.");
 
-    // Sending HTTP headers
-    clienteServidor.println("HTTP/1.1 200 OK");
-    clienteServidor.println("Content-type: text/html");
-    clienteServidor.println();
+        // Sending HTTP headers
+        clienteServidor.println("HTTP/1.1 200 OK");
+        clienteServidor.println("Content-type: text/html");
+        clienteServidor.println();
 
-    // Sending a JSON message as response
-    clienteServidor.print("{\"respuesta\":\"ok\",\"nombre\":\"");
-    clienteServidor.print(nombreS);
-    clienteServidor.println();
+        // Sending a JSON message as response
+        clienteServidor.print("{\"respuesta\":\"ok\",\"nombre\":\"");
+        clienteServidor.print(nombreS);
+        clienteServidor.println();
 
-    // Wait before continuing
-    delay(8000);
+        // Wait before continuing
+        delay(8000);
 
-    // Lock the lock after a certain time
-    digitalWrite(LOCK_PIN, 1);
+        // Lock the lock after a certain time
+        digitalWrite(LOCK_PIN, 1);
 
-    // Clearing the LCD screen
-    ////lcd.clear();
+        // Clearing the LCD screen
+        ////lcd.clear();
 
-    // Restarting the ESP32
-          esp_restart();
+        // Restarting the ESP32
+       // esp_restart();
     
 
 }
 void registerUserExit(){
 
       //lcd.clear();
-
-
+      Serial.println(nombreS);
+      Serial.print(", your exit has been registered.");
+      
+       
       //lcd.setCursor(0,0);
       //lcd.print("Se ha registrado su");
 
@@ -290,12 +303,7 @@ void registerUserExit(){
                        
       //lcd.setCursor(espaciosIzquierda,2);
       //lcd.print(nombreS);
-                        
-
-      Serial.print(nombreS);
-      Serial.println(".");
-
-
+                      
       digitalWrite(LOCK_PIN, 1);
 
 
@@ -313,7 +321,7 @@ void registerUserExit(){
       
 
       // REINICIO DE LA ESP32
-          esp_restart();
+          //esp_restart();
 
 
 }
