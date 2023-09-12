@@ -42,7 +42,7 @@ If you wish to contribute to this project, we welcome collaborations! Feel free 
 
 ## Credits
 
-Developed by [Your Name], [Jose Luis Murillo Salas], [Jose Cordoba Contreras], and [Luis Enrrique Cazares Garcia].
+Developed by Jose Luis Murillo Salas, Jose Cordoba Contreras, and Luis Enrrique Cazares Garcia.
 
 ## License
 
