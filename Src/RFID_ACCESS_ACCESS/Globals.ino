@@ -12,10 +12,15 @@
   bool interaccionOcurre = false;
 //  WIFI AND SERVER
 
+  char ssid[100]     = "RFID_2.4";
+  char password[100] = "3333379426";
+  const char* serverIP = "http://192.168.43.197";
+  char* phpDirectory = "http://192.168.43.197/registro_y_consulta.php";
+/*
   char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
   char password[100] = "Guadalajara129#";
   const char* serverIP = "http://192.168.100.146";
-  char* phpDirectory = "http://192.168.100.146/registro_y_consulta.php";
+  char* phpDirectory = "http://192.168.100.146/registro_y_consulta.php";*/
 // Peripheral_pins
 
   #define SS_PIN 5
