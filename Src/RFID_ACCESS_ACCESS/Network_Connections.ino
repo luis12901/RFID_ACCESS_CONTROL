@@ -9,12 +9,6 @@
 
 
 
-
-// Network Variables
-
-  char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
-  char password[100] = "Guadalajara129#";
-
   WiFiServer servidor(80);
 
 
@@ -66,7 +60,7 @@ bool WifiConnected() {
 bool ServerConnected() {
   
   // Variables de conexión HTTP
-    const char* serverIP = "http://192.168.100.146";
+    
     WiFiClient client;
     HTTPClient http;
 

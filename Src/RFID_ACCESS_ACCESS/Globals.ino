@@ -6,17 +6,26 @@
    Contact: joseluis.murillo2022@hotmail.com
 */
 
+
+
+// INACTIVITY TIMER
+  bool interaccionOcurre = false;
+//  WIFI AND SERVER
+
+  char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
+  char password[100] = "Guadalajara129#";
+  const char* serverIP = "http://192.168.100.146";
+  char* phpDirectory = "http://192.168.100.146/registro_y_consulta.php";
 // Peripheral_pins
 
   #define SS_PIN 5
   #define RST_PIN 35
-  #define BUZZER_PIN 2
+  #define BUZZER_PIN 12
   #define LOCK_PIN 32
   #define LCD 25
   #define RFID 26
   #define deepSleepPin 27
-  #define esp32ResetPin 
-
+  
 
 // RFID CARD
   MFRC522 mfrc522(SS_PIN, RST_PIN);
@@ -76,3 +85,7 @@
   char key;
 
   LiquidCrystal_I2C lcd(0x27,10,4);
+
+// Infrared Motion
+  const int pirPin = 2; 
+

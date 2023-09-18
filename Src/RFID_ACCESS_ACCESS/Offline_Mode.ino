@@ -13,11 +13,11 @@ void offline(){
 
   menu();
   
-  if(waitForKeyPress()){
+  waitForKeyPress();
 
-    waitForPasswordPress();
+  waitForPasswordPress();
 
-  }
+  
 }
 void menu(){
   
@@ -27,7 +27,7 @@ void menu(){
   Serial.println("2.- Intentar reconexion");
 
 }
-bool waitForKeyPress(){
+void waitForKeyPress(){
 
   while(true){
 
@@ -39,11 +39,9 @@ bool waitForKeyPress(){
 
       }   
   }
-
-  return true;
   
 }
-bool waitForPasswordPress(){
+void waitForPasswordPress(){
 
     Serial.println("Please enter the password:");
     uint8_t index = 0;

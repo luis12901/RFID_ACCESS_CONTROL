@@ -79,21 +79,21 @@ $registro = $resultado->fetch_assoc();
 
             if($acceso_nivel == true){
 
-    // Obtener el serialNumber enviado desde el ESP32
+                
 $serialNumber = $data['serialNumber'];
 
-// Consultar el último registro con el serialNumber recibido
+
 $sql = "SELECT tipo FROM registropersonaludg WHERE serialNumber = ? ORDER BY id DESC LIMIT 1";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $serialNumber);
 $stmt->execute();
 $resultado = $stmt->get_result();
 
-// Verificar si la consulta devolvió algún resultado
+
 if ($resultado->num_rows > 0) {
     $fila = $resultado->fetch_assoc();
     $tipo = $fila['tipo'];
-    // Verificar si el valor del último registro es "" o "ENTRADA"
+
     if ($tipo === "SALIDA") {
         $tipo_registro = true;
     } else {
@@ -101,8 +101,9 @@ if ($resultado->num_rows > 0) {
     }
 }
 else {
-    // Si no hay registros con el serialNumber recibido, asignar valor por defecto
+
     $tipo_registro = true;
+
 }
 
     if($tipo_registro){
@@ -110,13 +111,13 @@ else {
     $fila_consulta = $resultado_consulta->fetch_assoc();
     $usuario = $fila_consulta['usuario'];
     $estado_inicial = 'SIN PROCESAR';
-    // Preparar la consulta SQL
+
+
     $sql = "INSERT INTO registropersonaludg (usuario, serialNumber, fecha, estado, tipo) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $tipo = "ENTRADA";
     $stmt->bind_param("sssss", $usuario, $data['serialNumber'], $timestamp, $estado_inicial, $tipo);
 
-    // Ejecutar la consulta
     if ($stmt->execute()) {
         echo json_encode(array("mensaje" => "Datos insertados correctamente."));
     } else {
@@ -154,22 +155,22 @@ else {
             echo "Error al actualizar el estado en la tabla registropers    onaludg: " . $conn->error;
         }
   
-    // Cerrar conexión
+   
 $conn->close();
     }
-        /*  ACA SIMPLEMENTE SE DETERMINA QUE ES SALIDA, ASI QUE NO SE ACCIONA LA CERRADURA  */
+        
     else{
 
         $fila_consulta = $resultado_consulta->fetch_assoc();
     $usuario = $fila_consulta['usuario'];
     $estado_inicial = 'SIN PROCESAR';
-    // Preparar la consulta SQL
+
+
     $sql = "INSERT INTO registropersonaludg (usuario, serialNumber, fecha, estado, tipo) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $tipo = "SALIDA";
     $stmt->bind_param("sssss", $usuario, $data['serialNumber'], $timestamp, $estado_inicial, $tipo);
 
-    // Ejecutar la consulta
     if ($stmt->execute()) {
         echo json_encode(array("mensaje" => "Datos insertados correctamente."));
     } else {
@@ -205,7 +206,6 @@ $result = curl_exec($ch);
             echo "Error al actualizar el estado en la tabla registropersonaludg: " . $conn->error;
         }
   
-    // Cerrar conexión
 $conn->close();
 
     }

@@ -97,7 +97,7 @@ void postJSONToServer(){
       jsonMessage = json1 + serialNumber + json2;
       char completedJsonMessage[150];
       jsonMessage.toCharArray(completedJsonMessage, 150);
-      conexionURL(counter, completedJsonMessage, "http://192.168.100.146/registro_y_consulta.php", false);
+      conexionURL(counter, completedJsonMessage, phpDirectory, false);
 
 }
 void getJSONFromServer(){

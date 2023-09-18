@@ -28,6 +28,7 @@
 // prototypeFunctions();   // Use it only if the code doesn't compile for some missing prototype functions within the other ino files 
 
 
+
 void setup() {
   pinConfig();
   interfaceInit();
@@ -36,9 +37,10 @@ void setup() {
 
 void loop() {
 
+    inactivityTimer();
+    
     if(onlineVerification()){
 
-        
         online(); 
   
     }
@@ -47,6 +49,8 @@ void loop() {
         offline();
 
     }
+
+    
 }
 
 

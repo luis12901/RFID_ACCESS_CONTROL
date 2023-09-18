@@ -32,7 +32,7 @@ bool beginNetworking(){
       }
       else{
 
-        Serial.println("Connection Error (Code: 002)");
+        Serial.println("Connection Error");
 
         lcd.clear();
 
@@ -48,7 +48,7 @@ bool beginNetworking(){
   }
   else{
 
-    Serial.println("Connection Error (Code: 001)");
+    Serial.println("Connection Error");
 
     lcd.clear();
 

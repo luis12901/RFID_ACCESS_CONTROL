@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+	<title>Modular</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Arial, sans-serif;
+		}
+		
+			
+					.barra-superior {
+		  background-color: #999;
+		  color: #fff;
+		  padding: 10px;
+		  text-align: center;
+		}
+				
+		.container {
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+			text-align: justify;
+			line-height: 1.5;
+			font-size: 18px;
+		}
+			.imagen {
+			max-width: 100%;
+			height: auto;
+			margin: 20px 0;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+		}
+			button {
+	  background-color: #4CAF50;
+	  color: white;
+	  padding: 12px 20px;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	}
+	.titulo-y-botones {
+    display: inline-block;
+  }
+	</style>
+</head>
+<body>
+	
+	<div class="barra-superior">
+  <div class="titulo-y-botones">
+    <h1>Proyecto</h1>
+   <button class="centered" onclick="window.location.href='login.html'" type="button">Regresar</button>
+	</div>
+  </div>
+<div class="container">
+<img class="imagen" src="img/esp32.png" alt="imagen esp32">
+<img class="imagen" src="img/rc522.jpg" alt="imagen esp32">
+<img class="imagen" src="img/conexion.jpg" alt="imagen esp32">
+<p> Introducción
+El proyecto tiene como objetivo automatizar el proceso de registro de profesores en las aulas de manera eficiente y segura.
+Para ello se utilizarán componentes electrónicos como una esp32 con Arduino Laragon para la base de datos PHPMyAdmin y el servidor, un módulo RC522 para leer el RFID, una chapa eléctrica para abrir la puerta al momento en que se registre un profesor y un panel solar y una pila para la fuente de energía.
+Descripción del proyecto
+El proceso de registro de profesores en las aulas se llevará a cabo de la siguiente manera:
+
+El profesor acercará su tarjeta RFID al módulo RC522.
+El módulo RC522 leerá el número de identificación del profesor y enviará esta información a la esp32.
+La esp32 verificará la información recibida en la base de datos PHPMyAdmin para asegurarse de que el profesor esté registrado y autorizado para ingresar a la aula.
+Si el profesor está registrado, la esp32 enviará una señal a la chapa eléctrica para que se abra la puerta del aula.
+La esp32 también registrará la hora de ingreso del profesor en la base de datos PHPMyAdmin.
+Componentes utilizados
+ESP32
+La ESP32 es una placa de desarrollo basada en el microcontrolador ESP32 de Espressif.
+Se utilizará como el controlador principal del proyecto, conectándose a la base de datos PHPMyAdmin y enviando señales a la chapa eléctrica.
+Módulo RC522
+El módulo RC522 es un lector de tarjetas RFID.
+Se utilizará para leer la información de la tarjeta RFID del profesor y enviarla a la ESP32.
+Chapa eléctrica
+La chapa eléctrica es un dispositivo de seguridad que se utiliza para controlar el acceso a puertas.
+Se utilizará para abrir la puerta del aula al recibir una señal de la ESP32.
+Panel solar y pila
+Se utilizarán para alimentar el proyecto de manera autónoma, permitiendo su funcionamiento incluso en lugares remotos sin acceso a la red eléctrica.
+Conclusión
+El proyecto "Registro de profesor en el aula con módulo RFID" ofrece una solución automatizada y segura para el proceso de registro de profesores en las aulas. La implementación de este proyecto puede mejorar la eficiencia y seguridad en las instituciones educativas y reducir el tiempo y los costos asociados con los procesos manuales de registro.</p>
+		
+</div>
+</body>
+</html>

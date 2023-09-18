@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>CUCEI</title>
+    <style>
+      body {
+        background-color: #F5F5F5;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        color: #333333;
+      }
+      h1 {
+        background-color: #000000;
+        color: #FFFFFF;
+        padding: 10px;
+        text-align: center;
+      }
+      form {
+        margin: 0 auto;
+        width: 400px;
+        border: 1px solid #CCCCCC;
+        padding: 20px;
+        background-color: #FFFFFF;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #CCCCCC;
+        border-radius: 3px;
+        box-sizing: border-box;
+      }
+      input[type="submit"] {
+        background-color: #000000;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 3px;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+	  	.barra-titulo {
+			background-color: #000000;
+			height: 150px;
+			margin-bottom: 20px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		  }
+		 .logo img{
+			margin-right: 30px;
+			height: auto;
+			width: 90px;
+			border: none;
+			padding: 0;
+			margin-top: 20px;
+			margin-bottom: 20px;
+		  }
+			.contenedor {
+			margin: 80px auto;
+			padding: 60px;
+			background-color: #fff;
+			border: 1px solid #ddd;
+			max-width: 600px;
+		}
+		button {
+	  background-color: #4CAF50;
+	  color: white;
+	  padding: 12px 20px;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	}
+		.centered {
+			display: block;
+			margin: 0 auto;
+		}
+    </style>
+  </head>
+  <body>
+  <header>
+    <div class="barra-titulo">
+      <div class="logo">
+         <img src="img/udg.png" alt="Logo de la UDG">
+       </div>
+         <h1 class="titulo-principal">Monitoreo de Ingreso profesores CUCEI</h1>
+     </div>
+  </header>
+    <form action="validar.php" method="post">
+      <label for="usuario">Usuario:</label>
+      <input type="text" id="usuario" name="usuario"><br>
+      <label for="contrasena">Contraseña:</label>
+      <input type="password" id="contrasena" name="contrasena"><br>
+      <input type="submit" value="Iniciar sesión">
+    </form>
+	
+	<div class="contenedor">
+		<p>Proyecto Modular Para el ingreso de profesores en las intsalaciones en CUCEI</p>
+		<p>Proyecto by:</p>
+		<ul>
+			<li>Jose Cordoba Contreras </li>
+			<li>Jose Luis Murillo Salas </li>
+			<li>Luis Enrique Cazares Garcia</li>
+		</ul>
+	</div>
+	<button class="centered" onclick="window.location.href='modular.html'" type="button">Acerca del proyecto</button>
+  </body>
+</html>
