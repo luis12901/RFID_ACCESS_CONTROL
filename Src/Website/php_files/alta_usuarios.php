@@ -127,7 +127,7 @@
 			$nivel = $_POST["nivel"];
 
 			// Inserta los datos en la tabla "usuarios"
-			$sql = "INSERT INTO altausuario (usuario, serialNumber,nivel) VALUES ('$usuario','$serialNumber','$nivel')";
+			$sql = "INSERT INTO alta (usuario, serialNumber,nivel) VALUES ('$usuario','$serialNumber','$nivel')";
 			if ($conn->query($sql) === TRUE) {
 				 
 			  echo "<p>Usuario agregado correctamente</p>";
