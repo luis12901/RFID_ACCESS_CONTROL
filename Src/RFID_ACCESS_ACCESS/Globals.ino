@@ -25,7 +25,7 @@
 
   #define SS_PIN 5
   #define RST_PIN 35
-  #define BUZZER_PIN 12
+  #define BUZZER_PIN 2
   #define LOCK_PIN 32
   #define LCD 25
   #define RFID 26
