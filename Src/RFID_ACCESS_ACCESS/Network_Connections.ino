@@ -71,6 +71,9 @@ bool ServerConnected() {
 
   if (httpCode > 0) {
     
+      //digitalWrite(BUZZER_PIN, HIGH);
+      //delay(200);
+      //digitalWrite(BUZZER_PIN, LOW);
       return true;
        
   }

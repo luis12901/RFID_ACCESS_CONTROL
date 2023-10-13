@@ -38,9 +38,8 @@ void setup() {
 void loop() {
 
     inactivityTimer();
-    
     if(onlineVerification()){
-
+        
         online(); 
   
     }

@@ -19,7 +19,10 @@ bool beginNetworking(){
       lcd.print("server .....");
 
       if(ServerConnected()){
-   
+        
+        digitalWrite(BUZZER_PIN, HIGH);
+        delay(200);
+        digitalWrite(BUZZER_PIN, LOW);
         Serial.println("Connected Successfully");
 
         lcd.clear();
@@ -32,6 +35,14 @@ bool beginNetworking(){
       }
       else{
 
+
+        digitalWrite(BUZZER_PIN, HIGH);
+        delay(2000);
+        digitalWrite(BUZZER_PIN, LOW);
+        delay(200);  
+        digitalWrite(BUZZER_PIN, HIGH);
+        delay(2000);
+        digitalWrite(BUZZER_PIN, LOW);
         Serial.println("Connection Error");
 
         lcd.clear();
@@ -48,6 +59,14 @@ bool beginNetworking(){
   }
   else{
 
+    digitalWrite(BUZZER_PIN, HIGH);
+    delay(2000);
+    digitalWrite(BUZZER_PIN, LOW);
+    delay(200);  
+    digitalWrite(BUZZER_PIN, HIGH);
+    delay(2000);
+    digitalWrite(BUZZER_PIN, LOW);
+    
     Serial.println("Connection Error");
 
     lcd.clear();

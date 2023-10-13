@@ -9,28 +9,36 @@
 
 
 // INACTIVITY TIMER
-  bool interaccionOcurre = false;
-//  WIFI AND SERVER
+  static unsigned long startTime;
+  bool interaccionOcurre = true;
+  bool offlineInteraction = true;
+  unsigned long starOfLoop = 0;
+  unsigned long startTimeOffline = 0;
 
+//  WIFI AND SERVER
+/*
   char ssid[100]     = "RFID_2.4";
   char password[100] = "3333379426";
   const char* serverIP = "http://192.168.43.197";
-  char* phpDirectory = "http://192.168.43.197/registro_y_consulta.php";
-/*
+  char* phpDirectory = "http://192.168.43.197/registro_y_consulta.php";*/
+
   char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
   char password[100] = "Guadalajara129#";
-  const char* serverIP = "http://192.168.100.146";
-  char* phpDirectory = "http://192.168.100.146/registro_y_consulta.php";*/
+  const char* serverIP = "http://192.168.100.12";
+  char* phpDirectory = "http://192.168.100.12/registro_y_consulta.php";
+
+
 // Peripheral_pins
 
   #define SS_PIN 5
   #define RST_PIN 35
-  #define BUZZER_PIN 2
+  #define BUZZER_PIN 13
   #define LOCK_PIN 32
   #define LCD 25
   #define RFID 26
   #define deepSleepPin 27
-  
+
+
 
 // RFID CARD
   MFRC522 mfrc522(SS_PIN, RST_PIN);
@@ -92,5 +100,5 @@
   LiquidCrystal_I2C lcd(0x27,10,4);
 
 // Infrared Motion
-  const int pirPin = 2; 
+  const int pirPin = 35; 
 

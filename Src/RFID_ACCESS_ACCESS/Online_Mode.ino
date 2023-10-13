@@ -12,13 +12,14 @@
 
 void online(){
 
-  unsigned long startTime = 0;
+  starOfLoop = 0;
 
   while(true){
 
-      if (startTime == 0) {
 
-            startTime = millis();
+      if (starOfLoop == 0) {
+
+            starOfLoop = millis();
 
       }
 
@@ -27,20 +28,29 @@ void online(){
       
 
       if(serialNumber.length() > 0){
+        interaccionOcurre = true;
+          inactivityTimer();
 
             postJSONToServer();
             getJSONFromServer();
+            
+            interaccionOcurre = true;
+            inactivityTimer();
             break;
-
       }
 
       unsigned long currentTime = millis();
 
-      if (currentTime - startTime > 60000) {break;}
+      if (currentTime - startTime > 30000) {break;}
 
   }
+  
+  }
+  
 
-}
+  
+
+
 bool onlineVerification(){
 
       if(ServerConnected()){
@@ -61,6 +71,12 @@ void getRFIDData(){
   if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()) {
 
 
+
+      digitalWrite(BUZZER_PIN, HIGH);
+      delay(200);
+      digitalWrite(BUZZER_PIN, LOW);
+
+      // confirmamos los avances que no se puedan inter
       Serial.println("Card Detected!");
       Serial.println("Please Wait .........");
 
@@ -179,9 +195,9 @@ void getJSONFromServer(){
 
           // JSOP Message recieved
           tiempoComparacion = xTaskGetTickCount();
-          if (tiempoComparacion > (tiempoConexionInicio + 3000)) {
+          if (tiempoComparacion > (tiempoConexionInicio + 1000)) {
 
-                Serial.println("Error timeout");
+                Serial.println("");
                 break;
 
           }
@@ -286,8 +302,8 @@ void registerUserEntry(){
 void registerUserExit(){
 
       //lcd.clear();
-      Serial.println(nombreS);
-      Serial.print(", your exit has been registered.");
+      Serial.print(nombreS);
+      Serial.println(", your exit has been registered.");
       
        
       //lcd.setCursor(0,0);

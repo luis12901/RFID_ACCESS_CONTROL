@@ -28,41 +28,56 @@ void menu(){
 
 }
 void waitForKeyPress(){
-
+          
   while(true){
+  inactivityTimer();
+
 
       if(boton_1){
+        interaccionOcurre = true;
+          inactivityTimer();
           
           Serial.println("Offline mode selected");
           boton_1 = false; 
           break;
 
-      }   
-  }
+      }
+
+    }
   
 }
 void waitForPasswordPress(){
-
+         
     Serial.println("Please enter the password:");
     uint8_t index = 0;
-
     while(true){
+
+
+        inactivityTimer(); 
+
 
         char enteredPassword[7];
         char correctPassword[7] = "AAAAAA";
 
         key = keypad.getKey();
 
+         
         if (key) {
           
           enteredPassword[index] = key;  
           index++;
           Serial.println(key);
 
-        }
+
+
+          interaccionOcurre = true;
+          inactivityTimer(); 
+       }
 
 
         if (index == 6) {
+          interaccionOcurre = true;
+          inactivityTimer(); 
          
           if (strcmp(correctPassword, enteredPassword) == 0) {
            

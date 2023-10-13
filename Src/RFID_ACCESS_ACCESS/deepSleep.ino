@@ -3,19 +3,24 @@
 void inactivityTimer(){
 
   if (!interaccionOcurre) {
-        static unsigned long startTime = millis();
         unsigned long elapsedTime = millis() - startTime;
 
-        if (elapsedTime >= 60 * 1000UL) {   // 1 minute of inactivity will make true this condition
+        if (elapsedTime >= 300000) { // If the user is not using this terminal for 5 minutes, we switch to deepSleep mode   
           
           Serial.println();
           Serial.println("      Entering deep sleep mode ......");
           Serial.println();
           delay(100); 
-           // Configure ESP32 to enter deep sleep and define no wake up time
+
           esp_sleep_enable_ext0_wakeup(GPIO_NUM_14, HIGH); 
           esp_deep_sleep_start();
         }
       }
+      else{
+        startTime = millis();
+        Serial.println("Activity detected, deep sleep timer reset");
+        Serial.println(startTime);
+        interaccionOcurre = false;
+      }  
 
 }
