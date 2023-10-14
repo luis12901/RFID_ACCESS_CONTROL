@@ -11,6 +11,8 @@
 // INACTIVITY TIMER
   static unsigned long startTime;
   bool interaccionOcurre = true;
+
+// OFFLINE TIMER
   bool offlineInteraction = true;
   unsigned long starOfLoop = 0;
   unsigned long startTimeOffline = 0;
