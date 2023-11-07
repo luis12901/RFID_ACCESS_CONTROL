@@ -38,6 +38,7 @@ void setup() {
 void loop() {
 
     inactivityTimer();
+    //pirTimer();
     if(onlineVerification()){
         
         online(); 

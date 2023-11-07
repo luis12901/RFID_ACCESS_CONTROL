@@ -25,6 +25,8 @@ void menu(){
   Serial.println("Selecciona una opción:");
   Serial.println("1.- Ingresar al modo offline");
   Serial.println("2.- Intentar reconexion");
+  printCentered(0,"Presione una");
+  printCentered(1,"opcion");
 
 }
 void waitForKeyPress(){
@@ -49,48 +51,58 @@ void waitForKeyPress(){
 void waitForPasswordPress(){
          
     Serial.println("Please enter the password:");
-    uint8_t index = 0;
+    printCentered(0,"Ingrese la clave");
+    printCentered(1,"de esta aula");
+    String enteredPassword = "";
+    int counter = 0;
     while(true){
 
 
         inactivityTimer(); 
 
-
-        char enteredPassword[7];
-        char correctPassword[7] = "AAAAAA";
+        String correctPassword = "AAAAAA";
 
         key = keypad.getKey();
 
          
         if (key) {
-          
-          enteredPassword[index] = key;  
-          index++;
+          enteredPassword += key;
+         
           Serial.println(key);
+          uint8_t INITIAL_SPACES = 5;
 
+          counter = enteredPassword.length();
+          lcd.clear();
+          for(int i = 0; i < counter; i++){
+            
+            lcd.setCursor(INITIAL_SPACES + i, 0);
+            lcd.print("*");
 
+          }
 
           interaccionOcurre = true;
           inactivityTimer(); 
        }
 
 
-        if (index == 6) {
+        if (counter == 6) {
           interaccionOcurre = true;
           inactivityTimer(); 
          
-          if (strcmp(correctPassword, enteredPassword) == 0) {
-           
+          if (enteredPassword == "AAAAAA") {
+
             Serial.println("Access granted"); 
             Serial.println("");
-
-            //lcd.clear();
-            //lcd.setCursor(2, 0);
-            //lcd.print("Acceso permitido");
+            printCentered(0,"Acceso");
+            printCentered(1,"concedido");
             
             digitalWrite(LOCK_PIN, 0);
             delay(8000);
             digitalWrite(LOCK_PIN, 1);
+
+            
+            
+            
             
           }
 
@@ -99,15 +111,13 @@ void waitForPasswordPress(){
             Serial.println("Access denied. Incorrect password.");
             Serial.println("");
 
-            //lcd.clear();
-            //lcd.setCursor(2, 0);
-            //lcd.print("Acceso denegado");
-
+           printCentered(0,"Acceso");
+            printCentered(1,"denegado");
             digitalWrite(LOCK_PIN, 1);
 
           }
           
-          index = 0;
+          counter = 0;
 
           break;
          

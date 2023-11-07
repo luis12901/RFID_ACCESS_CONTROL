@@ -17,6 +17,14 @@
   unsigned long starOfLoop = 0;
   unsigned long startTimeOffline = 0;
 
+// PIR CONTROL
+  int sensorValue = 0;
+  bool presence = true;
+  unsigned long initial;
+  unsigned long elapsedmillis;
+  int counter = 0;
+  
+
 //  WIFI AND SERVER
 /*
   char ssid[100]     = "RFID_2.4";
@@ -26,8 +34,8 @@
 
   char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
   char password[100] = "Guadalajara129#";
-  const char* serverIP = "http://192.168.100.12";
-  char* phpDirectory = "http://192.168.100.12/registro_y_consulta.php";
+  const char* serverIP = "http://192.168.100.146";
+  char* phpDirectory = "http://192.168.100.146/Modular/registro_y_consulta.php";
 
 
 // Peripheral_pins
@@ -39,6 +47,9 @@
   #define LCD 25
   #define RFID 26
   #define deepSleepPin 27
+  #define ACTUATOR_PIN 26
+  #define PIR_PIN 25
+  #define LIMIT_SWT_PIN  33
 
 
 
@@ -101,6 +112,5 @@
 
   LiquidCrystal_I2C lcd(0x27,10,4);
 
-// Infrared Motion
-  const int pirPin = 35; 
+
 

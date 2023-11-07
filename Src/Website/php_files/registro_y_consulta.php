@@ -137,7 +137,7 @@ else {
     $data_string = json_encode($data);
     
     //$ch = curl_init('http://192.168.100.119');
-    $ch = curl_init('http://192.168.43.174');
+    $ch = curl_init('http://192.168.100.18');
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -189,7 +189,7 @@ $data = array(
 $data_string = json_encode($data);
 
 //$ch = curl_init('http://192.168.100.119');
-$ch = curl_init('http://192.168.43.174');
+$ch = curl_init('http://192.168.100.18');
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -227,7 +227,7 @@ $conn->close();
         $data_string = json_encode($data);
 
         //$ch = curl_init('http://192.168.100.119');
-        $ch = curl_init('http://192.168.43.174');
+        $ch = curl_init('http://192.168.100.18');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -256,7 +256,7 @@ else {
     $data_string = json_encode($data);
     
     //$ch = curl_init('http://192.168.100.119');
-    $ch = curl_init('http://192.168.43.174');
+    $ch = curl_init('http://192.168.100.18');
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

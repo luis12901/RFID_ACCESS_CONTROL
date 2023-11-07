@@ -11,25 +11,19 @@ bool beginNetworking(){
 
   if(WifiConnected()){
 
-      lcd.clear();
-      lcd.setCursor(3,1);
-      lcd.print("Connecting to");
-
-      lcd.setCursor(5,3);
-      lcd.print("server .....");
+      
+      printCentered(0,"Conectando....");
+      printCentered(1,"Porfavor espere");
+      
+        delay(200);
 
       if(ServerConnected()){
         
         digitalWrite(BUZZER_PIN, HIGH);
         delay(200);
         digitalWrite(BUZZER_PIN, LOW);
-        Serial.println("Connected Successfully");
-
-        lcd.clear();
-        lcd.setCursor(5,1);
-        lcd.print("Connected");
-        lcd.setCursor(2,2);
-        lcd.print("Successfully");
+        printCentered(0,"Conectado");
+        Serial.println("Connected Successfully");       
         return true;
 
       }
@@ -39,19 +33,16 @@ bool beginNetworking(){
         digitalWrite(BUZZER_PIN, HIGH);
         delay(2000);
         digitalWrite(BUZZER_PIN, LOW);
-        delay(200);  
+        delay(2000);  
         digitalWrite(BUZZER_PIN, HIGH);
         delay(2000);
         digitalWrite(BUZZER_PIN, LOW);
+
         Serial.println("Connection Error");
 
-        lcd.clear();
-
-        lcd.setCursor(0, 2);
-        lcd.print("Server Connection");
-        lcd.setCursor(0, 3);
-        lcd.print("Failed");
-
+        printCentered(0,"Error de");
+        printCentered(1,"conexion 02");
+        delay(2000);
         return false;
 
       }
@@ -69,13 +60,9 @@ bool beginNetworking(){
     
     Serial.println("Connection Error");
 
-    lcd.clear();
-
-    lcd.setCursor(0, 2);
-    lcd.print("Wifi Connection");
-    lcd.setCursor(0, 3);
-    lcd.print("Failed");
-    
+    printCentered(0,"Error de");
+    printCentered(1,"conexion 01");
+    delay(2000);
     return false;
 
   }
