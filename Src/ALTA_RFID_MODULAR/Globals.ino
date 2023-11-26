@@ -26,24 +26,23 @@
   
 
 //  WIFI AND SERVER
-/*
-  char ssid[100]     = "RFID_2.4";
-  char password[100] = "3333379426";
-  const char* serverIP = "http://192.168.8+43.122";
-  char* phpDirectory = "http://192.168.43.122/Modular/registro_y_consulta.php";
-*/
-  char ssid[100]     = "TP-LINK_2.4GHz_684D79";
-  char password[100] = "80228240";
-  const char* serverIP = "http://192.168.2.100";
-  char* phpDirectory = "http://192.168.2.100/Modular/registro_y_consulta.php";
 
+ char ssid[100]     = "RFID_2.4";
+  char password[100] = "3333379426";
+  const char* serverIP = "http://192.168.43.122";
+  char* phpDirectory = "http://192.168.43.122/Modular/alta_esp32.php";
 /*
+    char ssid[100]     = "TP-LINK_2.4GHz_684D79";
+  char password[100] = "80228240";
+  const char* serverIP = "http://192.168.2.102";
+  char* phpDirectory = "http://192.168.2.102/Modular/alta_esp32.php";
+
   char ssid[100]     = "Casa_Murillo_Salas_2.4Gnormal";
   char password[100] = "Guadalajara129#";
   const char* serverIP = "http://192.168.100.146";
   char* phpDirectory = "http://192.168.100.146/Modular/registro_y_consulta.php";
-
 */
+
 // Peripheral_pins
 
   #define SS_PIN 5
@@ -52,10 +51,16 @@
   #define LOCK_PIN 32
   #define LCD 25
   #define RFID 26
-  #define deepSleepPin 27
+  #define deepSleepPin 34
   #define ACTUATOR_PIN 26
   #define PIR_PIN 25
-  #define LIMIT_SWT_PIN  33
+  #define DoorStatusPin 14
+
+  #define CONNECTED 14
+  #define DISCONNECTED 12
+  #define CARD_DETECTED 27
+  
+
 
 
 
@@ -85,8 +90,6 @@
 
 
   WiFiClient clienteServidor;
-
-  
 
 
 // LCD Variables
